@@ -1,5 +1,5 @@
+import java.util.ArrayList;
 import java.util.Scanner;
-
 public class Baimi {
     public static void main(String[] args) {
         System.out.println("____________________________________________________________");
@@ -8,13 +8,12 @@ public class Baimi {
         System.out.println("____________________________________________________________");
 
         Scanner scanner = new Scanner(System.in);
-        Task[] tasks = new Task[100];
-        int taskCount = 0;
+        ArrayList<Task> tasks = new ArrayList<>();
         String command;
 
         while (true) {
             try {
-                command = scanner.nextLine();
+                command = scanner.nextLine().trim();
                 System.out.println("____________________________________________________________");
 
                 if (command.equals("bye")) {
@@ -22,87 +21,110 @@ public class Baimi {
                     System.out.println("____________________________________________________________");
                     break;
                 } else if (command.equals("list")) {
-                    if (taskCount == 0) {
-                        System.out.println("No tasks available.");
-                    } else {
-                        System.out.println("Here are the tasks in your list:");
-                        for (int i = 0; i < taskCount; i++) {
-                            System.out.println((i + 1) + "." + tasks[i]);
-                        }
-                    }
+                    handleListCommand(tasks);
                 } else if (command.startsWith("mark ")) {
-                    try {
-                        int taskIndex = Integer.parseInt(command.split(" ")[1]) - 1;
-                        if (taskIndex < 0 || taskIndex >= taskCount) {
-                            throw new BaimiException("Invalid task number. Please provide a valid task index.");
-                        }
-                        tasks[taskIndex].markAsDone();
-                        System.out.println("Nice! I've marked this task as done:");
-                        System.out.println("  " + tasks[taskIndex]);
-                    } catch (NumberFormatException e) {
-                        throw new BaimiException("Please provide a valid task number to mark.");
-                    }
+                    handleMarkCommand(command, tasks);
                 } else if (command.startsWith("unmark ")) {
-                    try {
-                        int taskIndex = Integer.parseInt(command.split(" ")[1]) - 1;
-                        if (taskIndex < 0 || taskIndex >= taskCount) {
-                            throw new BaimiException("Invalid task number. Please provide a valid task index.");
-                        }
-                        tasks[taskIndex].markAsNotDone();
-                        System.out.println("OK, I've marked this task as not done yet:");
-                        System.out.println("  " + tasks[taskIndex]);
-                    } catch (NumberFormatException e) {
-                        throw new BaimiException("Please provide a valid task number to unmark.");
-                    }
+                    handleUnmarkCommand(command, tasks);
                 } else if (command.startsWith("todo ")) {
-                    String description = command.substring(5).trim();
-                    if (description.isEmpty()) {
-                        throw new BaimiException("The description of a todo cannot be empty.");
-                    }
-                    tasks[taskCount] = new Todo(description);
-                    taskCount++;
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + tasks[taskCount - 1]);
-                    System.out.println("Now you have " + taskCount + " tasks in the list.");
+                    handleTodoCommand(command, tasks);
                 } else if (command.startsWith("deadline ")) {
-                    String[] parts = command.substring(9).split(" /by ");
-                    if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-                        throw new BaimiException("Invalid deadline format. Use: deadline [description] /by [time].");
-                    }
-                    String description = parts[0].trim();
-                    String by = parts[1].trim();
-                    tasks[taskCount] = new Deadline(description, by);
-                    taskCount++;
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + tasks[taskCount - 1]);
-                    System.out.println("Now you have " + taskCount + " tasks in the list.");
+                    handleDeadlineCommand(command, tasks);
                 } else if (command.startsWith("event ")) {
-                    String[] parts = command.substring(6).split(" /from ");
-                    if (parts.length < 2 || parts[0].trim().isEmpty()) {
-                        throw new BaimiException("Invalid event format. Use: event [description] /from [start time] /to [end time].");
-                    }
-                    String description = parts[0].trim();
-                    String[] timeParts = parts[1].split(" /to ");
-                    if (timeParts.length < 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
-                        throw new BaimiException("Invalid event format. Use: event [description] /from [start time] /to [end time].");
-                    }
-                    String from = timeParts[0].trim();
-                    String to = timeParts[1].trim();
-                    tasks[taskCount] = new Event(description, from, to);
-                    taskCount++;
-                    System.out.println("Got it. I've added this task:");
-                    System.out.println("  " + tasks[taskCount - 1]);
-                    System.out.println("Now you have " + taskCount + " tasks in the list.");
+                    handleEventCommand(command, tasks);
+                } else if (command.startsWith("delete ")) {
+                    handleDeleteCommand(command, tasks);
                 } else {
-                    throw new BaimiException("I'm sorry, but I don't understand that command.");
+                    throw new UnknownCommandException();
                 }
             } catch (BaimiException e) {
-                System.out.println(e.getMessage());
+                System.out.println("OOPS!!! " + e.getMessage());
             }
-
             System.out.println("____________________________________________________________");
         }
 
         scanner.close();
+    }
+
+    private static void handleListCommand(ArrayList<Task> tasks) {
+        if (tasks.isEmpty()) {
+            System.out.println("No tasks available.");
+        } else {
+            System.out.println("Here are the tasks in your list:");
+            for (int i = 0; i < tasks.size(); i++) {
+                System.out.println((i + 1) + "." + tasks.get(i));
+            }
+        }
+    }
+
+    private static void handleMarkCommand(String command, ArrayList<Task> tasks) throws TaskIndexOutOfBoundsException, InvalidFormatException {
+        int taskIndex = getTaskIndex(command, "mark ", tasks.size());
+        tasks.get(taskIndex).markAsDone();
+        System.out.println("Nice! I've marked this task as done:");
+        System.out.println("  " + tasks.get(taskIndex));
+    }
+
+    private static void handleUnmarkCommand(String command, ArrayList<Task> tasks) throws TaskIndexOutOfBoundsException, InvalidFormatException {
+        int taskIndex = getTaskIndex(command, "unmark ", tasks.size());
+        tasks.get(taskIndex).markAsNotDone();
+        System.out.println("OK, I've marked this task as not done yet:");
+        System.out.println("  " + tasks.get(taskIndex));
+    }
+
+    private static void handleTodoCommand(String command, ArrayList<Task> tasks) throws EmptyDescriptionException {
+        String description = command.substring(5).trim();
+        if (description.isEmpty()) {
+            throw new EmptyDescriptionException("todo");
+        }
+        tasks.add(new Todo(description));
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + tasks.get(tasks.size() - 1));
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+    }
+
+    private static void handleDeadlineCommand(String command, ArrayList<Task> tasks) throws InvalidFormatException {
+        String[] parts = command.substring(9).split(" /by ");
+        if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
+            throw new InvalidFormatException("deadline [description] /by [time]");
+        }
+        tasks.add(new Deadline(parts[0].trim(), parts[1].trim()));
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + tasks.get(tasks.size() - 1));
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+    }
+
+    private static void handleEventCommand(String command, ArrayList<Task> tasks) throws InvalidFormatException {
+        String[] parts = command.substring(6).split(" /from ");
+        if (parts.length < 2 || parts[0].trim().isEmpty()) {
+            throw new InvalidFormatException("event [description] /from [start time] /to [end time]");
+        }
+        String[] timeParts = parts[1].split(" /to ");
+        if (timeParts.length < 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
+            throw new InvalidFormatException("event [description] /from [start time] /to [end time]");
+        }
+        tasks.add(new Event(parts[0].trim(), timeParts[0].trim(), timeParts[1].trim()));
+        System.out.println("Got it. I've added this task:");
+        System.out.println("  " + tasks.get(tasks.size() - 1));
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+    }
+
+    private static void handleDeleteCommand(String command, ArrayList<Task> tasks) throws TaskIndexOutOfBoundsException, InvalidFormatException {
+        int taskIndex = getTaskIndex(command, "delete ", tasks.size());
+        Task removedTask = tasks.remove(taskIndex);
+        System.out.println("Noted. I've removed this task:");
+        System.out.println("  " + removedTask);
+        System.out.println("Now you have " + tasks.size() + " tasks in the list.");
+    }
+
+    private static int getTaskIndex(String command, String prefix, int size) throws TaskIndexOutOfBoundsException, InvalidFormatException {
+        try {
+            int taskIndex = Integer.parseInt(command.substring(prefix.length()).trim()) - 1;
+            if (taskIndex < 0 || taskIndex >= size) {
+                throw new TaskIndexOutOfBoundsException(size);
+            }
+            return taskIndex;
+        } catch (NumberFormatException e) {
+            throw new InvalidFormatException(prefix + "[task number]");
+        }
     }
 }
