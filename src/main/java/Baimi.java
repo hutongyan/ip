@@ -2,13 +2,8 @@ import java.util.Scanner;
 
 public class Baimi {
     public static void main(String[] args) {
-        String logo = " ____    _    _   __  __   _ \n"
-                + "| __ )  / \\  | | |  \\/  | (_)\n"
-                + "|  _ \\ / _ \\ | | | |\\/| | | |\n"
-                + "| |_) / ___ \\| | | |  | | | |\n"
-                + "|____/_/   \\_\\_| |_|  |_| |_|\n";
         System.out.println("____________________________________________________________");
-        System.out.println("Hello! I'm Baimi\n" + logo);
+        System.out.println("Hello! I'm Baimi");
         System.out.println("What can I do for you?");
         System.out.println("____________________________________________________________");
 
@@ -35,35 +30,44 @@ public class Baimi {
                     }
                 }
             } else if (command.startsWith("mark ")) {
-                try {
-                    int taskIndex = Integer.parseInt(command.split(" ")[1]) - 1;
-                    if (taskIndex >= 0 && taskIndex < taskCount) {
-                        tasks[taskIndex].markAsDone();
-                        System.out.println("Nice! I've marked this task as done:");
-                        System.out.println("  " + tasks[taskIndex]);
-                    } else {
-                        System.out.println("Invalid task number.");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Please enter a valid task number.");
-                }
+                int taskIndex = Integer.parseInt(command.split(" ")[1]) - 1;
+                tasks[taskIndex].markAsDone();
+                System.out.println("Nice! I've marked this task as done:");
+                System.out.println("  " + tasks[taskIndex]);
             } else if (command.startsWith("unmark ")) {
-                try {
-                    int taskIndex = Integer.parseInt(command.split(" ")[1]) - 1;
-                    if (taskIndex >= 0 && taskIndex < taskCount) {
-                        tasks[taskIndex].markAsNotDone();
-                        System.out.println("OK, I've marked this task as not done yet:");
-                        System.out.println("  " + tasks[taskIndex]);
-                    } else {
-                        System.out.println("Invalid task number.");
-                    }
-                } catch (NumberFormatException e) {
-                    System.out.println("Please enter a valid task number.");
-                }
-            } else {
-                tasks[taskCount] = new Task(command);
+                int taskIndex = Integer.parseInt(command.split(" ")[1]) - 1;
+                tasks[taskIndex].markAsNotDone();
+                System.out.println("OK, I've marked this task as not done yet:");
+                System.out.println("  " + tasks[taskIndex]);
+            } else if (command.startsWith("todo ")) {
+                String description = command.substring(5);
+                tasks[taskCount] = new Todo(description);
                 taskCount++;
-                System.out.println("added: " + command);
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + tasks[taskCount - 1]);
+                System.out.println("Now you have " + taskCount + " tasks in the list.");
+            } else if (command.startsWith("deadline ")) {
+                String[] parts = command.substring(9).split(" /by ");
+                String description = parts[0];
+                String by = parts[1];
+                tasks[taskCount] = new Deadline(description, by);
+                taskCount++;
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + tasks[taskCount - 1]);
+                System.out.println("Now you have " + taskCount + " tasks in the list.");
+            } else if (command.startsWith("event ")) {
+                String[] parts = command.substring(6).split(" /from ");
+                String description = parts[0];
+                String[] timeParts = parts[1].split(" /to ");
+                String from = timeParts[0];
+                String to = timeParts[1];
+                tasks[taskCount] = new Event(description, from, to);
+                taskCount++;
+                System.out.println("Got it. I've added this task:");
+                System.out.println("  " + tasks[taskCount - 1]);
+                System.out.println("Now you have " + taskCount + " tasks in the list.");
+            } else {
+                System.out.println("Sorry, I didn't understand that command.");
             }
 
             System.out.println("____________________________________________________________");
@@ -72,4 +76,3 @@ public class Baimi {
         scanner.close();
     }
 }
-
