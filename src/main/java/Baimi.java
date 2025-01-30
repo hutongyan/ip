@@ -1,4 +1,7 @@
 import java.io.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -172,7 +175,7 @@ public class Baimi {
     private static void handleDeadlineCommand(String command, ArrayList<Task> tasks) throws InvalidFormatException {
         String[] parts = command.substring(9).split(" /by ");
         if (parts.length < 2 || parts[0].trim().isEmpty() || parts[1].trim().isEmpty()) {
-            throw new InvalidFormatException("deadline [description] /by [time]");
+            throw new InvalidFormatException("deadline [description] /by YYYY-MM-DD HHMM");
         }
         tasks.add(new Deadline(parts[0].trim(), parts[1].trim()));
         System.out.println("Got it. I've added this task:");
@@ -183,11 +186,11 @@ public class Baimi {
     private static void handleEventCommand(String command, ArrayList<Task> tasks) throws InvalidFormatException {
         String[] parts = command.substring(6).split(" /from ");
         if (parts.length < 2 || parts[0].trim().isEmpty()) {
-            throw new InvalidFormatException("event [description] /from [start time] /to [end time]");
+            throw new InvalidFormatException("event [description] /from YYYY-MM-DD HHMM /to YYYY-MM-DD HHMM");
         }
         String[] timeParts = parts[1].split(" /to ");
         if (timeParts.length < 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
-            throw new InvalidFormatException("event [description] /from [start time] /to [end time]");
+            throw new InvalidFormatException("event [description] /from YYYY-MM-DD HHMM /to YYYY-MM-DD HHMM");
         }
         tasks.add(new Event(parts[0].trim(), timeParts[0].trim(), timeParts[1].trim()));
         System.out.println("Got it. I've added this task:");
