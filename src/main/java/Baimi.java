@@ -1,7 +1,11 @@
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Baimi {
+    private static final String FILE_PATH = "./data/duke.txt";
+    private static final String DIRECTORY_PATH = "./data/";
+
     public static void main(String[] args) {
         System.out.println("____________________________________________________________");
         System.out.println("Hello! I'm Baimi");
@@ -9,7 +13,8 @@ public class Baimi {
         System.out.println("____________________________________________________________");
 
         Scanner scanner = new Scanner(System.in);
-        ArrayList<Task> tasks = new ArrayList<>();
+        //ArrayList<Task> tasks = new ArrayList<>();
+        ArrayList<Task> tasks = loadTasks();  // Load tasks at startup
         String command;
 
         while (true) {
@@ -38,6 +43,8 @@ public class Baimi {
                 } else {
                     throw new UnknownCommandException();
                 }
+
+                saveTasks(tasks);
             } catch (BaimiException e) {
                 System.out.println("OOPS!!! " + e.getMessage());
             }
@@ -45,6 +52,85 @@ public class Baimi {
         }
 
         scanner.close();
+    }
+
+    private static ArrayList<Task> loadTasks() {
+        ArrayList<Task> tasks = new ArrayList<>();
+        File file = new File(FILE_PATH);
+
+        if (!file.exists()) {
+            System.out.println("No previous tasks found. Starting fresh tasks...");
+            return tasks;
+        }
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(" \\| ");
+                if (parts.length < 3) continue;
+
+                Task task;
+                String type = parts[0];
+                boolean isDone = parts[1].equals("1");
+                String description = parts[2];
+
+                switch (type) {
+                    case "T":
+                        task = new Todo(description);
+                        break;
+                    case "D":
+                        if (parts.length < 4) continue;
+                        task = new Deadline(description, parts[3]);
+                        break;
+                    case "E":
+                        if (parts.length < 5) continue;
+                        task = new Event(description, parts[3], parts[4]);
+                        break;
+                    default:
+                        continue;
+                }
+
+                if (isDone) {
+                    task.markAsDone();
+                }
+                tasks.add(task);
+            }
+            System.out.println("Tasks successfully loaded from file.");
+        } catch (IOException e) {
+            System.out.println("Error loading tasks: " + e.getMessage());
+        }
+
+        return tasks;
+    }
+
+    private static void saveTasks(ArrayList<Task> tasks) {
+        try {
+            File directory = new File(DIRECTORY_PATH);
+            if (!directory.exists()) {
+                directory.mkdirs();  // Create directory if it doesn't exist
+            }
+
+            File file = new File(FILE_PATH);
+            FileWriter writer = new FileWriter(file);
+            for (Task task : tasks) {
+                writer.write(formatTask(task) + "\n");
+            }
+            writer.close();
+        } catch (IOException e) {
+            System.out.println("Error saving tasks: " + e.getMessage());
+        }
+    }
+
+    private static String formatTask(Task task) {
+        String status = task.isDone ? "1" : "0";
+        if (task instanceof Todo) {
+            return "T | " + status + " | " + task.description;
+        } else if (task instanceof Deadline) {
+            return "D | " + status + " | " + task.description + " | " + ((Deadline) task).by;
+        } else if (task instanceof Event) {
+            return "E | " + status + " | " + task.description + " | " + ((Event) task).from + " | " + ((Event) task).to;
+        }
+        return "";
     }
 
     private static void handleListCommand(ArrayList<Task> tasks) {
