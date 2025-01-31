@@ -1,0 +1,40 @@
+public class Parser {
+    public static Command parse(String command) throws BaimiException {
+        if (command.equals("bye")) {
+            return new ExitCommand();
+        } else if (command.equals("list")) {
+            return new ListCommand();
+        } else if (command.startsWith("todo ")) {
+            if (command.length() <= 5) {
+                throw new EmptyDescriptionException("todo");
+            }
+            return new AddCommand(command.substring(5));
+        } else if (command.startsWith("deadline ")) {
+            String[] parts = command.substring(9).split(" /by ");
+            if (parts.length < 2) {
+                throw new InvalidFormatException("deadline [description] /by YYYY-MM-DD HHMM");
+            }
+            return new AddDeadlineCommand(parts[0], parts[1]);
+        } else if (command.startsWith("event ")) {
+            String[] parts = command.substring(6).split(" /from ");
+            if (parts.length < 2) {
+                throw new InvalidFormatException("event [description] /from YYYY-MM-DD HHMM /to YYYY-MM-DD HHMM");
+            }
+            String[] timeParts = parts[1].split(" /to ");
+            if (timeParts.length < 2) {
+                throw new InvalidFormatException("event [description] /from YYYY-MM-DD HHMM /to YYYY-MM-DD HHMM");
+            }
+            return new AddEventCommand(parts[0], timeParts[0], timeParts[1]);
+        } else if (command.startsWith("mark ")) {
+            int index = Integer.parseInt(command.substring(5)) - 1;  // 1-based to 0-based index
+            return new MarkCommand(index);
+        } else if (command.startsWith("unmark ")) {
+            int index = Integer.parseInt(command.substring(7)) - 1;
+            return new UnmarkCommand(index);
+        } else if (command.startsWith("delete ")) {
+            int index = Integer.parseInt(command.substring(7)) - 1;
+            return new DeleteCommand(index);
+        }
+        throw new UnknownCommandException();
+    }
+}
