@@ -1,5 +1,11 @@
+package storage;
+
+import core.TaskList;
+import ui.Ui;
+import exception.BaimiException;
+import task.*;
+
 import java.io.*;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
@@ -73,15 +79,15 @@ public class Storage {
     }
 
     private String formatTask(Task task) {
-        String status = task.isDone ? "1" : "0";
+        String status = task.isDone() ? "1" : "0";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
 
         if (task instanceof Todo) {
-            return "T | " + status + " | " + task.description;
+            return "T | " + status + " | " + task.getDescription();
         } else if (task instanceof Deadline) {
-            return "D | " + status + " | " + task.description + " | " + ((Deadline) task).getBy().format(formatter);
+            return "D | " + status + " | " + task.getDescription() + " | " + ((Deadline) task).getBy().format(formatter);
         } else if (task instanceof Event) {
-            return "E | " + status + " | " + task.description + " | " + ((Event) task).getFrom().format(formatter) + " | " + ((Event) task).getTo().format(formatter);
+            return "E | " + status + " | " + task.getDescription() + " | " + ((Event) task).getFrom().format(formatter) + " | " + ((Event) task).getTo().format(formatter);
         }
         return "";
     }

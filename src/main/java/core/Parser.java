@@ -1,3 +1,9 @@
+package core;
+
+
+import command.*;
+import exception.*;
+
 public class Parser {
     public static Command parse(String command) throws BaimiException {
         if (command.equals("bye")) {

@@ -1,3 +1,13 @@
+package command;
+
+// 导入 TaskList
+import core.TaskList;
+import ui.Ui;
+import storage.Storage;
+import exception.BaimiException;
+import exception.TaskIndexOutOfBoundsException;
+import task.Task;
+
 public class DeleteCommand extends Command {
     private int taskIndex;
 

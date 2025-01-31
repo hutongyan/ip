@@ -1,3 +1,11 @@
+package command;
+
+import core.TaskList;
+import ui.Ui;
+import storage.Storage;
+import exception.BaimiException;
+import task.*;
+
 public class AddDeadlineCommand extends Command {
     private String description;
     private String by;

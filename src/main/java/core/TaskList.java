@@ -1,3 +1,10 @@
+package core;
+
+import java.util.ArrayList;
+import task.Task; // 引入 Task 类
+import ui.Ui; // 引入 Ui 类
+import exception.TaskIndexOutOfBoundsException;
+
 import java.util.ArrayList;
 
 public class TaskList {
