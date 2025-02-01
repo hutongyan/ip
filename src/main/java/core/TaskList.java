@@ -1,11 +1,12 @@
 package core;
 
 import java.util.ArrayList;
-import task.Task; // 引入 Task 类
-import ui.Ui; // 引入 Ui 类
+import task.Task;
+import ui.Ui;
 import exception.TaskIndexOutOfBoundsException;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class TaskList {
     private ArrayList<Task> tasks;
@@ -41,6 +42,22 @@ public class TaskList {
             throw new TaskIndexOutOfBoundsException(tasks.size());
         }
         tasks.get(index).markAsNotDone();
+    }
+
+    /**
+     * Finds tasks that contain a specific keyword in their description.
+     *
+     * @param keyword The keyword to search for.
+     * @return A list of tasks containing the keyword.
+     */
+    public List<Task> findTasks(String keyword) {
+        List<Task> matchingTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().toLowerCase().contains(keyword.toLowerCase())) {
+                matchingTasks.add(task);
+            }
+        }
+        return matchingTasks;
     }
 
     public void printList(Ui ui) {
