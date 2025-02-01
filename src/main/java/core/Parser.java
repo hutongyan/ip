@@ -61,6 +61,8 @@ public class Parser {
         } else if (command.startsWith("delete ")) {
             int index = Integer.parseInt(command.substring(7)) - 1;
             return new DeleteCommand(index);
+        }  else if (command.startsWith("find ")) {
+            return new FindCommand(command.substring(5));
         }
         throw new UnknownCommandException();
     }
