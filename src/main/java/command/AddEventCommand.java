@@ -4,7 +4,7 @@ import core.TaskList;
 import ui.Ui;
 import storage.Storage;
 import exception.BaimiException;
-import task.*;
+import task.Event;
 
 /**
  * Represents a command to add a new event task to the task list.

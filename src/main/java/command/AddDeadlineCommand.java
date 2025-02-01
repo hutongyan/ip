@@ -4,7 +4,7 @@ import core.TaskList;
 import ui.Ui;
 import storage.Storage;
 import exception.BaimiException;
-import task.*;
+import task.Deadline;
 
 /**
  * Represents a command to add a new deadline task to the task list.
