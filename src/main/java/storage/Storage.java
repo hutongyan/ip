@@ -9,14 +9,29 @@ import java.io.*;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
+/**
+ * manages the storage of tasks in the application.
+ *
+ */
 public class Storage {
     private static final String DIRECTORY_PATH = "./data/";
     private String filePath;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath The path to the file to store tasks.
+     */
     public Storage(String filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Loads tasks from the file.
+     *
+     * @return The list of tasks loaded from the file.
+     * @throws BaimiException If an error occurs while loading tasks.
+     */
     public ArrayList<Task> load() throws BaimiException {
         ArrayList<Task> tasks = new ArrayList<>();
         File file = new File(filePath);
@@ -61,6 +76,12 @@ public class Storage {
         return tasks;
     }
 
+    /**
+     * Saves the list of tasks to the file.
+     *
+     * @param tasks The list of tasks to save.
+     * @throws BaimiException If an error occurs while saving tasks.
+     */
     public void save(ArrayList<Task> tasks) throws BaimiException {
         try {
             File directory = new File(DIRECTORY_PATH);
@@ -78,6 +99,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Formats a task to a string that can be saved to the file.
+     *
+     * @param task The task to format.
+     * @return The formatted string.
+     */
     private String formatTask(Task task) {
         String status = task.isDone() ? "1" : "0";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");

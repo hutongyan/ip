@@ -4,7 +4,17 @@ package core;
 import command.*;
 import exception.*;
 
+/**
+ * Parses user input into commands.
+ */
 public class Parser {
+    /**
+     * Parses the user input into a command.
+     *
+     * @param command The user input.
+     * @return The command corresponding to the user input.
+     * @throws BaimiException If the user input is invalid.
+     */
     public static Command parse(String command) throws BaimiException {
         if (command.equals("bye")) {
             return new ExitCommand();

@@ -12,10 +12,16 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+/**
+ * Contains the tests for the DeleteCommand class.
+ */
 class DeleteCommandTest {
 
     private static final String TEST_FILE_PATH = "./test_data/test.txt";
 
+    /**
+     * Sets up the test environment.
+     */
     @BeforeEach
     void setUp() {
         File testDir = new File("./test_data");
@@ -24,6 +30,11 @@ class DeleteCommandTest {
         }
     }
 
+    /**
+     * Tests the execute method of the DeleteCommand class.
+     *
+     * @throws BaimiException If an error occurs.
+     */
     @Test
     void execute_deletesTaskSuccessfully() throws BaimiException {
         TaskList taskList = new TaskList();
