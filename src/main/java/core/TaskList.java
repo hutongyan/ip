@@ -1,8 +1,8 @@
 package core;
 
 import java.util.ArrayList;
-import task.Task; // 引入 Task 类
-import ui.Ui; // 引入 Ui 类
+import task.Task;
+import ui.Ui;
 import exception.TaskIndexOutOfBoundsException;
 
 import java.util.ArrayList;

@@ -1,8 +1,19 @@
 package core;
 
 
-import command.*;
-import exception.*;
+import command.AddDeadlineCommand;
+import command.AddEventCommand;
+import command.AddCommand;
+import command.Command;
+import command.DeleteCommand;
+import command.ExitCommand;
+import command.ListCommand;
+import command.MarkCommand;
+import command.UnmarkCommand;
+import exception.BaimiException;
+import exception.EmptyDescriptionException;
+import exception.InvalidFormatException;
+import exception.UnknownCommandException;
 
 public class Parser {
     public static Command parse(String command) throws BaimiException {

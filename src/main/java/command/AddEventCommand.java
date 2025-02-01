@@ -4,7 +4,7 @@ import core.TaskList;
 import ui.Ui;
 import storage.Storage;
 import exception.BaimiException;
-import task.*;
+import task.Event;
 
 public class AddEventCommand extends Command {
     private String description;
