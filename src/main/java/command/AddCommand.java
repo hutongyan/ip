@@ -33,7 +33,7 @@ public class AddCommand extends Command {
     @Override
     public String executeAndGetResponse(TaskList tasks, Ui ui, Storage storage) throws BaimiException {
         Task task = new Todo(description);
-        tasks.addTask(task);
+        tasks.addTasks(task);
         storage.save(tasks.getTasks());
 
         return "Got it. I've added this task:\n  " + task +

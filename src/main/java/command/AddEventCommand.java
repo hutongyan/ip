@@ -39,7 +39,7 @@ public class AddEventCommand extends Command {
     @Override
     public String executeAndGetResponse(TaskList tasks, Ui ui, Storage storage) throws Exception {
         Event event = new Event(description, from, to);
-        tasks.addTask(event);
+        tasks.addTasks(event);
         storage.save(tasks.getTasks());
 
         return "Got it. I've added this event:\n  " + event +

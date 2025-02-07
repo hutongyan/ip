@@ -36,7 +36,7 @@ public class AddDeadlineCommand extends Command {
     @Override
     public String executeAndGetResponse(TaskList tasks, Ui ui, Storage storage) throws Exception {
         Deadline deadline = new Deadline(description, by);
-        tasks.addTask(deadline);
+        tasks.addTasks(deadline);
         storage.save(tasks.getTasks());
 
         return "Got it. I've added this task:\n  " + deadline +

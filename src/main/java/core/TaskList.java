@@ -19,9 +19,13 @@ public class TaskList {
         this.tasks = tasks;
     }
 
-    public void addTask(Task task) {
-        tasks.add(task);
+    public void addTasks(Task... newTasks) {
+        for (Task task : newTasks) {
+            tasks.add(task);
+            System.out.println("Added: " + task);
+        }
     }
+
 
     public void deleteTask(int index) throws TaskIndexOutOfBoundsException {
         if (index < 0 || index >= tasks.size()) {
