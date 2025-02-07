@@ -6,6 +6,8 @@ import ui.Ui;
 import task.Task;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 /**
  * Represents a command to find tasks by keyword.
@@ -25,20 +27,25 @@ public class FindCommand extends Command {
     /**
      * Executes the find command, searching for tasks that contain the keyword.
      *
-     * @param tasks   The task list.
-     * @param ui      The user interface.
-     * @param storage The storage handler (not used in this command).
+     * @param tasks The task list.
+     * @param ui The user interface.
+     * @param storage The storage handler.
+     * @return The response to the user command.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        List<Task> matchingTasks = tasks.findTasks(keyword);
-        if (matchingTasks.isEmpty()) {
-            ui.showMessage("No matching tasks found.");
+    public String executeAndGetResponse(TaskList tasks, Ui ui, Storage storage) {
+        List<Task> matchedTasks = tasks.getTasks().stream()
+                .filter(task -> task.getDescription().contains(keyword))
+                .collect(Collectors.toList());
+
+        if (matchedTasks.isEmpty()) {
+            return "No matching tasks found.";
         } else {
-            ui.showMessage("Here are the matching tasks in your list:");
-            for (int i = 0; i < matchingTasks.size(); i++) {
-                ui.showMessage((i + 1) + ". " + matchingTasks.get(i));
+            StringBuilder result = new StringBuilder("Here are the matching tasks:\n");
+            for (int i = 0; i < matchedTasks.size(); i++) {
+                result.append(i + 1).append(". ").append(matchedTasks.get(i)).append("\n");
             }
+            return result.toString();
         }
     }
 }

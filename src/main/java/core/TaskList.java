@@ -74,5 +74,17 @@ public class TaskList {
     public ArrayList<Task> getTasks() {
         return tasks;
     }
+
+    public String getListAsString() {
+        if (tasks.isEmpty()) {
+            return "No tasks available.";
+        } else {
+            StringBuilder sb = new StringBuilder("Here are your tasks:\n");
+            for (int i = 0; i < tasks.size(); i++) {
+                sb.append((i + 1)).append(". ").append(tasks.get(i)).append("\n");
+            }
+            return sb.toString();
+        }
+    }
 }
 

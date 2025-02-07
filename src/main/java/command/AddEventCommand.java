@@ -28,19 +28,21 @@ public class AddEventCommand extends Command {
     }
 
     /**
-     * Executes the command to add a new event task to the task list.
+     * Executes the add event command, adding a new event task to the task list.
      *
-     * @param tasks The task list to which the task will be added.
-     * @param ui The user interface to interact with the user.
-     * @param storage The storage object to save tasks to the file.
-     * @throws Exception If an error occurs during task addition.
+     * @param tasks The task list.
+     * @param ui The user interface.
+     * @param storage The storage handler.
+     * @return The response to the user command.
+     * @throws BaimiException If an error occurs during the execution of the command.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
+    public String executeAndGetResponse(TaskList tasks, Ui ui, Storage storage) throws Exception {
         Event event = new Event(description, from, to);
         tasks.addTask(event);
-        ui.showMessage("Got it. I've added this task:\n  " + event);
-        ui.showMessage("Now you have " + tasks.getTasks().size() + " tasks in the list.");
         storage.save(tasks.getTasks());
+
+        return "Got it. I've added this event:\n  " + event +
+                "\nNow you have " + tasks.getTasks().size() + " tasks in the list.";
     }
 }

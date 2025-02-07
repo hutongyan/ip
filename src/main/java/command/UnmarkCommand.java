@@ -4,6 +4,7 @@ import core.TaskList;
 import ui.Ui;
 import storage.Storage;
 import exception.BaimiException;
+import exception.TaskIndexOutOfBoundsException;
 import task.Task;
 import task.Todo;
 
@@ -23,20 +24,25 @@ public class UnmarkCommand extends Command {
     }
 
     /**
-     * Executes the unmark command.
-     * <p>
-     * This command marks the task at the specified index as not done in the task list.
+     * Executes the unmark command, marking a task as not done in the task list.
      *
-     * @param tasks   The task list to mark the task as not done in.
-     * @param ui      The user interface to display messages.
-     * @param storage The storage to save tasks to.
-     * @throws BaimiException If an error occurs during task unmarking.
+     * @param tasks The task list.
+     * @param ui The user interface.
+     * @param storage The storage handler.
+     * @return The response to the user command.
+     * @throws BaimiException If an error occurs during the execution of the command.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws BaimiException {
+    public String executeAndGetResponse(TaskList tasks, Ui ui, Storage storage) throws BaimiException {
+        if (taskIndex < 0 || taskIndex >= tasks.getTasks().size()) {
+            throw new TaskIndexOutOfBoundsException(tasks.getTasks().size());
+        }
+
         tasks.unmarkTask(taskIndex);
-        ui.showMessage("OK, I've marked this task as not done yet:\n  " + tasks.getTasks().get(taskIndex));
+        Task task = tasks.getTasks().get(taskIndex);
         storage.save(tasks.getTasks());
+
+        return "OK, I've marked this task as not done yet:\n  " + task;
     }
 }
 

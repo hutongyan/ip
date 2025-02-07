@@ -23,20 +23,21 @@ public class AddCommand extends Command {
     }
 
     /**
-     * Executes the command to add a new task to the task list.
+     * Executes the add command, adding a new task to the task list.
      *
-     * @param tasks The task list to which the task will be added.
-     * @param ui The user interface to interact with the user.
-     * @param storage The storage object to save tasks to the file.
-     * @throws BaimiException If an error occurs during task addition.
+     * @param tasks   The task list.
+     * @param ui      The user interface.
+     * @param storage The storage handler.
+     * @throws BaimiException If an error occurs while saving the task list.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws BaimiException {
+    public String executeAndGetResponse(TaskList tasks, Ui ui, Storage storage) throws BaimiException {
         Task task = new Todo(description);
         tasks.addTask(task);
-        ui.showMessage("Got it. I've added this task:\n  " + task);
-        ui.showMessage("Now you have " + tasks.getTasks().size() + " tasks in the list.");
-        storage.save(tasks.getTasks());  // Save changes
+        storage.save(tasks.getTasks());
+
+        return "Got it. I've added this task:\n  " + task +
+                "\nNow you have " + tasks.getTasks().size() + " tasks in the list.";
     }
 }
 

@@ -25,19 +25,21 @@ public class AddDeadlineCommand extends Command {
     }
 
     /**
-     * Executes the command to add a new deadline task to the task list.
+     * Executes the add deadline command, adding a new deadline task to the task list.
      *
-     * @param tasks The task list to which the task will be added.
-     * @param ui The user interface to interact with the user.
-     * @param storage The storage object to save tasks to the file.
-     * @throws Exception If an error occurs during task addition.
+     * @param tasks The task list.
+     * @param ui The user interface.
+     * @param storage The storage handler.
+     * @return The response to the user command.
+     * @throws BaimiException If an error occurs during the execution of the command.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws Exception {
+    public String executeAndGetResponse(TaskList tasks, Ui ui, Storage storage) throws Exception {
         Deadline deadline = new Deadline(description, by);
         tasks.addTask(deadline);
-        ui.showMessage("Got it. I've added this task:\n  " + deadline);
-        ui.showMessage("Now you have " + tasks.getTasks().size() + " tasks in the list.");
         storage.save(tasks.getTasks());
+
+        return "Got it. I've added this task:\n  " + deadline +
+                "\nNow you have " + tasks.getTasks().size() + " tasks in the list.";
     }
 }
