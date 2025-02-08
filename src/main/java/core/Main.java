@@ -8,7 +8,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 /**
- * A GUI for Baimi using JavaFX.
+ * A GUI for Baimi  using JavaFX.
  */
 public class Main extends Application {
 
