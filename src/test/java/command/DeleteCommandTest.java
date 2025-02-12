@@ -38,11 +38,11 @@ class DeleteCommandTest {
     @Test
     void execute_deletesTaskSuccessfully() throws BaimiException {
         TaskList taskList = new TaskList();
-        taskList.addTask(new Todo("Test Task"));
+        taskList.addTasks(new Todo("Test Task"));
         Ui ui = new Ui();
         Storage storage = new Storage(TEST_FILE_PATH);
         DeleteCommand deleteCommand = new DeleteCommand(0);
-        deleteCommand.execute(taskList, ui, storage);
+        deleteCommand.executeAndGetResponse(taskList, ui, storage);
         assertEquals(0, taskList.getTasks().size());
         new File(TEST_FILE_PATH).delete();
     }

@@ -32,7 +32,7 @@ class TaskListTest {
     void addTask_addsTaskSuccessfully() {
         Task task = new Todo("Read book");
 
-        taskList.addTask(task);
+        taskList.addTasks(task);
         assertEquals(1, taskList.getTasks().size());
         assertSame(task, taskList.getTasks().get(0));
     }

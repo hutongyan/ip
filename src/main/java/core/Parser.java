@@ -3,7 +3,7 @@ package core;
 
 import command.AddDeadlineCommand;
 import command.AddEventCommand;
-import command.AddCommand;
+import command.AddTodoCommand;
 import command.Command;
 import command.DeleteCommand;
 import command.ExitCommand;
@@ -36,7 +36,7 @@ public class Parser {
             if (command.length() <= 5) {
                 throw new EmptyDescriptionException("todo");
             }
-            return new AddCommand(command.substring(5));
+            return new AddTodoCommand(command.substring(5));
         } else if (command.startsWith("deadline ")) {
             String[] parts = command.substring(9).split(" /by ");
             if (parts.length < 2) {
