@@ -10,7 +10,7 @@ import task.Todo;
 /**
  * Represents a command to add a new task to the task list.
  */
-public class AddCommand extends Command {
+public class AddTodoCommand extends Command {
     private String description;
 
     /**
@@ -18,7 +18,7 @@ public class AddCommand extends Command {
      *
      * @param description The description of the task to add.
      */
-    public AddCommand(String description) {
+    public AddTodoCommand(String description) {
         this.description = description;
     }
 
