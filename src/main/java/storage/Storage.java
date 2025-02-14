@@ -57,18 +57,18 @@ public class Storage {
                 boolean isDone = parts[1].equals("1");
                 String description = parts[2];
 
-                switch (type) {
-                    case "T":
-                        task = new Todo(description);
-                        break;
-                    case "D":
-                        task = new Deadline(description, parts[3]);
-                        break;
-                    case "E":
-                        task = new Event(description, parts[3], parts[4]);
-                        break;
-                    default:
-                        continue;
+                 switch (type) {
+                 case "T":
+                    task = new Todo(description);
+                    break;
+                 case "D":
+                     task = new Deadline(description, parts[3]);
+                     break;
+                 case "E":
+                     task = new Event(description, parts[3], parts[4]);
+                     break;
+                 default:
+                     continue;
                 }
 
                 if (isDone) {
