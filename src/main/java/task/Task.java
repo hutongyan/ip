@@ -1,4 +1,7 @@
 package task;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.stream.Collectors;
 
 /**
  * Represents a task in the task list.
@@ -7,6 +10,7 @@ public class Task {
     protected String description;
     protected boolean isDone;
     protected TaskType type;
+    protected Set<String> tags;
 
     /**
      * Creates a new task with the specified description and type.
@@ -20,6 +24,17 @@ public class Task {
         this.description = description;
         this.isDone = false;
         this.type = type;
+        this.tags = new HashSet<>();
+    }
+
+    public void addTag(String tag) {
+        tags.add(tag);
+    }
+    public void removeTag(String tag) {
+        tags.remove(tag);
+    }
+    public Set<String> getTags() {
+        return tags;
     }
     /**
      * Returns the type of the task.
@@ -73,6 +88,7 @@ public class Task {
      */
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        String tagString = tags.isEmpty() ? "" : " " + tags.stream().map(t -> "#" + t).collect(Collectors.joining(" "));
+        return "[" + getStatusIcon() + "] " + description + tagString;
     }
 }

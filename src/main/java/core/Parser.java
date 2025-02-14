@@ -10,6 +10,7 @@ import command.ExitCommand;
 import command.FindCommand;
 import command.ListCommand;
 import command.MarkCommand;
+import command.TagCommand;
 import command.UnmarkCommand;
 import exception.BaimiException;
 import exception.EmptyDescriptionException;
@@ -65,7 +66,22 @@ public class Parser {
             return new DeleteCommand(index);
         }  else if (command.startsWith("find ")) {
             return new FindCommand(command.substring(5));
+        }  else if (command.startsWith("tag ")) {
+            String[] parts = command.substring(4).split(" ");
+            if (parts.length < 2) {
+                throw new InvalidFormatException("tag [index] [tag]");
+            }
+            int index = Integer.parseInt(parts[0]) - 1;
+            return new TagCommand(index, parts[1], true);
+        } else if (command.startsWith("untag ")) {
+            String[] parts = command.substring(6).split(" ");
+            if (parts.length < 2) {
+                throw new InvalidFormatException("untag [index] [tag]");
+            }
+            int index = Integer.parseInt(parts[0]) - 1;
+            return new TagCommand(index, parts[1], false);
+        } else {
+            throw new UnknownCommandException();
         }
-        throw new UnknownCommandException();
     }
 }

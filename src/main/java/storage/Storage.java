@@ -74,6 +74,12 @@ public class Storage {
                 if (isDone) {
                     task.markAsDone();
                 }
+                if (parts.length >= 4 && parts[parts.length - 1].contains(",")) {
+                    String[] tagArray = parts[parts.length - 1].split(",");
+                    for (String tag : tagArray) {
+                        task.addTag(tag.trim());
+                    }
+                }
                 tasks.add(task);
             }
         } catch (IOException e) {
@@ -115,13 +121,16 @@ public class Storage {
     private String formatTask(Task task) {
         String status = task.isDone() ? "1" : "0";
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+        String tagString = task.getTags().isEmpty() ? "" : " #" + String.join(" #", task.getTags());
 
         if (task instanceof Todo) {
-            return "T | " + status + " | " + task.getDescription();
+            return "T | " + status + " | " + task.getDescription() + tagString;
         } else if (task instanceof Deadline) {
-            return "D | " + status + " | " + task.getDescription() + " | " + ((Deadline) task).getBy().format(formatter);
+            return "D | " + status + " | " + task.getDescription() + " | "
+                    + ((Deadline) task).getBy().format(formatter) + tagString;
         } else if (task instanceof Event) {
-            return "E | " + status + " | " + task.getDescription() + " | " + ((Event) task).getFrom().format(formatter) + " | " + ((Event) task).getTo().format(formatter);
+            return "E | " + status + " | " + task.getDescription() + " | "
+                    + ((Event) task).getFrom().format(formatter) + " | " + ((Event) task).getTo().format(formatter) + tagString;
         }
         return "";
     }

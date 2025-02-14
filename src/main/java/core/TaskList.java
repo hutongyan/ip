@@ -93,5 +93,33 @@ public class TaskList {
             return sb.toString();
         }
     }
+
+    /**
+     * Returns the number of tasks in the list.
+     *
+     * @return The number of tasks in the list.
+     */
+    public void tagTask(int index, String tag) throws TaskIndexOutOfBoundsException {
+        assert tag != null && !tag.trim().isEmpty() : "Tag cannot be null or empty";
+
+        if (index < 0 || index >= tasks.size()) {
+            throw new TaskIndexOutOfBoundsException(tasks.size());
+        }
+        tasks.get(index).addTag(tag);
+    }
+
+    /**
+     * Untags a task with a specific tag.
+     *
+     * @param index The index of the task to untag.
+     * @param tag The tag to remove from the task.
+     * @throws TaskIndexOutOfBoundsException If the index is out of bounds.
+     */
+    public void untagTask(int index, String tag) throws TaskIndexOutOfBoundsException {
+        if (index < 0 || index >= tasks.size()) {
+            throw new TaskIndexOutOfBoundsException(tasks.size());
+        }
+        tasks.get(index).removeTag(tag);
+    }
 }
 
