@@ -28,6 +28,7 @@ public class Parser {
      * @throws BaimiException If the user input is invalid.
      */
     public static Command parse(String command) throws BaimiException {
+        assert command != null : "Command cannot be null";
         if (command.equals("bye")) {
             return new ExitCommand();
         } else if (command.equals("list")) {
