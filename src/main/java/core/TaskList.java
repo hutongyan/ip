@@ -28,6 +28,7 @@ public class TaskList {
 
 
     public void deleteTask(int index) throws TaskIndexOutOfBoundsException {
+        assert index >= 0 : "Task index cannot be negative";
         if (index < 0 || index >= tasks.size()) {
             throw new TaskIndexOutOfBoundsException(tasks.size());
         }
@@ -35,6 +36,7 @@ public class TaskList {
     }
 
     public void markTask(int index) throws TaskIndexOutOfBoundsException {
+        assert index >= 0 : "Task index cannot be negative";
         if (index < 0 || index >= tasks.size()) {
             throw new TaskIndexOutOfBoundsException(tasks.size());
         }
@@ -42,6 +44,7 @@ public class TaskList {
     }
 
     public void unmarkTask(int index) throws TaskIndexOutOfBoundsException {
+        assert index >= 0 : "Task index cannot be negative";
         if (index < 0 || index >= tasks.size()) {
             throw new TaskIndexOutOfBoundsException(tasks.size());
         }
