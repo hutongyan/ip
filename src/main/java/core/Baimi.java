@@ -75,11 +75,6 @@ public class Baimi {
         }
     }
 
-    /**
-     * The main method that starts the Baimi application.
-     *
-     * @param args Command-line arguments (not used).
-     */
     public static void main(String[] args) {
         new Baimi("./data/duke.txt").run();
     }
