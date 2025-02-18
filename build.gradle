@@ -48,8 +48,9 @@ application {
 }
 
 shadowJar {
-    archiveBaseName = "duke"
+    archiveBaseName = "baimi"
     archiveClassifier = null
+    archiveFileName = 'baimi.jar'
 }
 
 run{
