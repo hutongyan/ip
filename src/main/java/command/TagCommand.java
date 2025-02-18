@@ -39,6 +39,6 @@ public class TagCommand extends Command {
             ui.showMessage("Tag removed: #" + tag + " from task " + (taskIndex + 1));
         }
         storage.save(tasks.getTasks());
-        return "Nice! I've tagged this task:\n  ";
+        return "Nice baby! I've tagged this task:\n  ";
     }
 }

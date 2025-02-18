@@ -42,7 +42,7 @@ public class AddEventCommand extends Command {
         tasks.addTasks(event);
         storage.save(tasks.getTasks());
 
-        return "Got it. I've added this event:\n  " + event +
+        return "Got it baby. I've added this event:\n  " + event +
                 "\nNow you have " + tasks.getTasks().size() + " tasks in the list.";
     }
 }

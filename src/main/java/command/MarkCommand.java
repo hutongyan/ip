@@ -42,7 +42,7 @@ public class MarkCommand extends Command {
         Task task = tasks.getTasks().get(taskIndex);
         storage.save(tasks.getTasks());
 
-        return "Nice! I've marked this task as done:\n  " + task;
+        return "Nice baby! I've marked this task as done:\n  " + task;
     }
 }
 

@@ -39,7 +39,7 @@ public class AddDeadlineCommand extends Command {
         tasks.addTasks(deadline);
         storage.save(tasks.getTasks());
 
-        return "Got it. I've added this task:\n  " + deadline +
+        return "Got it baby. I've added this task:\n  " + deadline +
                 "\nNow you have " + tasks.getTasks().size() + " tasks in the list.";
     }
 }

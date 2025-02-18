@@ -36,7 +36,7 @@ public class AddTodoCommand extends Command {
         tasks.addTasks(task);
         storage.save(tasks.getTasks());
 
-        return "Got it. I've added this task:\n  " + task +
+        return "Got it baby. I've added this task:\n  " + task +
                 "\nNow you have " + tasks.getTasks().size() + " tasks in the list.";
     }
 }

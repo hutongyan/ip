@@ -39,7 +39,7 @@ public class FindCommand extends Command {
                 .collect(Collectors.toList());
 
         if (matchedTasks.isEmpty()) {
-            return "No matching tasks found.";
+            return "Sorry baby, no matching tasks found.";
         } else {
             StringBuilder result = new StringBuilder("Here are the matching tasks:\n");
             for (int i = 0; i < matchedTasks.size(); i++) {
