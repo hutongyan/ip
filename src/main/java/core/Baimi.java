@@ -62,7 +62,7 @@ public class Baimi {
                 String fullCommand = ui.readCommand();
                 ui.showLine();
                 Command c = Parser.parse(fullCommand);
-                String response = c.executeAndGetResponse(tasks, ui, storage); // 修改这里
+                String response = c.executeAndGetResponse(tasks, ui, storage);
                 ui.showMessage(response);
                 isExit = c.isExit();
             } catch (BaimiException e) {

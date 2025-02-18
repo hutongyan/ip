@@ -29,6 +29,9 @@ public class MainWindow extends AnchorPane {
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
+        dialogContainer.getChildren().add(
+                DialogBox.getBaimiDialog("Hello! I'm Baimi, a task management chatbot.\n What can I do for you today?", baimiImage)
+        );
     }
 
     public void setBaimi(Baimi b) {

@@ -19,8 +19,8 @@ public class Ui {
      */
     public void showWelcome() {
         System.out.println("____________________________________________________________");
-        System.out.println("Hello! I'm Baimi");
-        System.out.println("What can I do for you?");
+        System.out.println("Hello! I'm Baimi, a task manager chatbot.");
+        System.out.println("What can I do for you today?");
         System.out.println("____________________________________________________________");
     }
 
