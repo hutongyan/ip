@@ -1,4 +1,4 @@
-# Baimi Task Manage Chatbot Project
+# Baimi project template
 
 This is a project UserGuide for a greenfield Java project. It's named  _Baimi_. Given below are instructions on how to use it.
 
